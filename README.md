@@ -39,7 +39,7 @@ Enter your `JUPYTER_TOKEN` password when prompted.
 
 ## Notes
 
-* Deploy a VS Code but will crash on render free tier which only offer 512 MB memory. 
+* Deploy a VS Code but will crash on render free tier which only offers 512 MB memory. 
 
 ```dockerfile
 # Use the official OpenVSCode Server image
