@@ -17,6 +17,10 @@ USER jovyan
 # Install xeus-cpp kernel using mamba/conda (latest version)
 RUN mamba install -c conda-forge xeus-cpp -y
 
+# Keep only the C++23 kernel in JupyterLab
+RUN rm -rf /opt/conda/share/jupyter/kernels/* \
+    && cp -r /opt/conda/share/jupyter/kernels/xcpp23 /opt/conda/share/jupyter/kernels/
+
 # Install any additional kernels or packages
 RUN pip install --no-cache-dir \
     jupyterlab \
