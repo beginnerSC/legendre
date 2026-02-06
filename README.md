@@ -36,3 +36,18 @@ Enter your `JUPYTER_TOKEN` password when prompted.
 * JupyterLab with xeus-cpp kernel for C++ notebook support
 * Python kernel included
 * Ready-to-use computing environment
+
+## Notes
+
+* Deploy a VS Code but will crash on render free tier which only offer 512 MB memory. 
+
+```dockerfile
+# Use the official OpenVSCode Server image
+FROM gitpod/openvscode-server:latest
+
+# Render uses port 10000 by default for web services
+EXPOSE 10000
+
+# Start the server listening on all interfaces at port 10000
+CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
+```
