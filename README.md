@@ -52,17 +52,12 @@ EXPOSE 10000
 CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
 ```
 
-* Deploy a throwaray browser but will crach, same as VS Code
+* Deploy a throwaray browser on Fly.io
   * See `fly.toml` below
+  * Kasm 支援與本地電腦同步剪貼簿
   * 建議配置 2GB RAM，如果每天只用 1-2 小時，月費不會超過 $5
   * 安全警示：這類服務極易被掃描器發現並用來刷流量（做為 Proxy），務必設定密碼 (TOKEN)，否則你的額度會在一夜之間噴光
-  
-```dockerfile
-FROM kasmweb/chrome:1.15.0
-
-# 預設 6901，改成奇怪的數字能避開 90% 的駭客自動化掃描
-EXPOSE 18427
-```
+  * 加密 zip file 並把檔名改成如 notes.docx
 
 ```bash
 fly secrets set VNC_PW='YOUR_PASSWORD'
@@ -73,10 +68,10 @@ app = "my-private-browser"
 primary_region = "hkg" # 建議選離你近的，如 hkg (香港) 或 nrt (東京)
 
 [build]
-  image = "kasmweb/chrome:1.15.0"
+  image = "kasmweb/chrome:1.15.0" # 預設 6901，改成奇怪的數字能避開 90% 的駭客自動化掃描
 
 [[services]]
-  internal_port = 6901 # Kasm 預設埠號
+  internal_port = 18427 
   protocol = "tcp"
   
   # 省錢核心：自動開關機
@@ -96,6 +91,7 @@ primary_region = "hkg" # 建議選離你近的，如 hkg (香港) 或 nrt (東�
 
 [env]
   VNC_PW = "暫不填寫" # 密碼我們稍後用 Secrets 設定，不寫在檔案裡
+  VNC_PORT = "18427" # 必須與 internal_port 一致
 
 ```
 
