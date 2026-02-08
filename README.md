@@ -68,7 +68,7 @@ fly secrets set VNC_PW='YOUR_PASSWORD'
 
 ```toml
 app = "my-private-browser"
-primary_region = "hkg" # 建議選離你近的，如 hkg (香港) 或 nrt (東京)
+primary_region = "ewr" # 建議選離你近的
 
 [build]
   image = "kasmweb/chrome:1.15.0" # 預設 6901，改成奇怪的數字能避開 90% 的駭客自動化掃描
