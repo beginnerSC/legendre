@@ -69,6 +69,3 @@ CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
     * 優點：
       * 極速：因為是底層 VM，性能比一般的 Container 平台更穩定
       * 持久化儲存：提供免費的 Volumes，這解決了 Render 重新啟動後檔案消失的問題
-  * Oracle Cloud Always Free (終極「大碗滿意」): 如果您能成功註冊，這是一台真正的虛擬專屬伺服器 (VPS)
-    * 規格：24GB RAM 和 4 顆 ARM CPU 核心
-    * 優點：這不是 PaaS，而是一台完整的 Linux 機器。您可以安裝 Docker 並同時跑 10 個不同的 Web App，完全不用擔心時數
