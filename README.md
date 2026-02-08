@@ -57,7 +57,10 @@ CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
   * Kasm 支援與本地電腦同步剪貼簿
   * 建議配置 2GB RAM，如果每天只用 1-2 小時，月費不會超過 $5
   * 安全警示：這類服務極易被掃描器發現並用來刷流量（做為 Proxy），務必設定密碼 (TOKEN)，否則你的額度會在一夜之間噴光
-  * 加密 zip file 並把檔名改成如 notes.docx
+  * 加密 zip file 並把檔名改成如 notes.docx，不要超過 20 MB，不要用剪貼簿
+  * fly.dev and onrender.com 本身就很可疑，用 Custom Domain（例如 my-personal-notes.com）+ Cloudflare Proxy
+  * Binder 更可疑。Jupyter 連線長時間保持開啟，流量特徵非常像隱藏的後門或跳板
+  * 筆記頁上的一個隱藏連結連到 my-personal-notes.com/static/lib/min.js + iframe trick，網址列只看到 my-personal-notes.com
 
 ```bash
 fly secrets set VNC_PW='YOUR_PASSWORD'
@@ -92,7 +95,6 @@ primary_region = "hkg" # 建議選離你近的，如 hkg (香港) 或 nrt (東�
 [env]
   VNC_PW = "暫不填寫" # 密碼我們稍後用 Secrets 設定，不寫在檔案裡
   VNC_PORT = "18427" # 必須與 internal_port 一致
-
 ```
 
 * Alternatives to Render: 
