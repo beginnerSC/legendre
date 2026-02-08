@@ -39,7 +39,7 @@ Enter your `JUPYTER_TOKEN` password when prompted.
 
 ## Notes
 
-* Deploy a VS Code but will crash on render free tier which only offers 512 MB memory. 
+* Deploy a VS Code but will crash on render free tier which only offers 512 MB memory
 
 ```dockerfile
 # Use the official OpenVSCode Server image
@@ -51,6 +51,33 @@ EXPOSE 10000
 # Start the server listening on all interfaces at port 10000
 CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
 ```
+
+* Deploy a throwaray browser but will crach, same as VS Code
+  * See `fly.toml` below
+  * 要完整的 Linux 桌面瀏覽器體驗（有選單、能下載檔案）：kasmweb/chrome:1.15.0。非常吃資源，建議配置 2GB RAM，這會讓你的月費超過 $5（需支付差額）
+  * 安全警示：這類服務極易被掃描器發現並用來刷流量（做為 Proxy），務必設定密碼 (TOKEN)，否則你的額度會在一夜之間噴光
+  
+```dockerfile
+FROM browserless/chrome:latest
+
+# 設定連線密碼（重要，否則會被盜用資源）
+ENV TOKEN=your-secure-password
+# 設定啟動參數
+ENV MAX_CONCURRENT_SESSIONS=1
+
+EXPOSE 3000
+```
+
+```toml
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  # 這是省錢關鍵：無連線時自動關機
+  auto_stop_machines = true 
+  auto_start_machines = true
+  min_machines_running = 0
+```
+
 * Alternatives to Render: 
   * Railway.app (最靈活的 PaaS): Railway 是 Render 最強的競爭對手，對於部署 Docker 容器非常友善
     * 費用：採用 "Pay-as-you-go" 模式。每個月提供 $5 USD 的免費額度（如果您通過開發者驗證）
