@@ -54,28 +54,49 @@ CMD ["--host", "0.0.0.0", "--port", "10000", "--without-connection-token"]
 
 * Deploy a throwaray browser but will crach, same as VS Code
   * See `fly.toml` below
-  * 要完整的 Linux 桌面瀏覽器體驗（有選單、能下載檔案）：kasmweb/chrome:1.15.0。非常吃資源，建議配置 2GB RAM，這會讓你的月費超過 $5（需支付差額）
+  * 建議配置 2GB RAM，如果每天只用 1-2 小時，月費不會超過 $5
   * 安全警示：這類服務極易被掃描器發現並用來刷流量（做為 Proxy），務必設定密碼 (TOKEN)，否則你的額度會在一夜之間噴光
   
 ```dockerfile
-FROM browserless/chrome:latest
+FROM kasmweb/chrome:1.15.0
 
-# 設定連線密碼（重要，否則會被盜用資源）
-ENV TOKEN=your-secure-password
-# 設定啟動參數
-ENV MAX_CONCURRENT_SESSIONS=1
+# 預設 6901，改成奇怪的數字能避開 90% 的駭客自動化掃描
+EXPOSE 18427
+```
 
-EXPOSE 3000
+```bash
+fly secrets set VNC_PW='YOUR_PASSWORD'
 ```
 
 ```toml
+app = "my-private-browser"
+primary_region = "hkg" # 建議選離你近的，如 hkg (香港) 或 nrt (東京)
+
+[build]
+  image = "kasmweb/chrome:1.15.0"
+
 [[services]]
-  internal_port = 3000
+  internal_port = 6901 # Kasm 預設埠號
   protocol = "tcp"
-  # 這是省錢關鍵：無連線時自動關機
-  auto_stop_machines = true 
+  
+  # 省錢核心：自動開關機
+  auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+[vm]
+  # 效能核心：1GB 是流暢底線，2GB 最穩
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+
+[env]
+  VNC_PW = "暫不填寫" # 密碼我們稍後用 Secrets 設定，不寫在檔案裡
+
 ```
 
 * Alternatives to Render: 
